@@ -5,7 +5,7 @@ nixPkgs = ["nodejs_20"]
 cmds = ["npm install"]
 
 [phases.build]
-cmds = ["npx prisma generate && npx prisma db push"]
+cmds = ["npx prisma generate"]
 
 [start]
-cmd = "node --import tsx/esm src/app.ts"
+cmd = "npx prisma db push && node --import tsx/esm src/app.ts"
