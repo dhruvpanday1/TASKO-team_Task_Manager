@@ -19,13 +19,11 @@ ENV NODE_ENV=production
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.mjs ./next.config.mjs
-
-# Install only production dependencies
-RUN npm ci --omit=dev
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/node_modules ./node_modules
 
 # Expose port (Railway provides $PORT env)
-EXPOSE $PORT
+EXPOSE 3000
 
-# Start Next.js server on the provided port
+# Start Next.js server
 CMD ["npm", "run", "start"]
