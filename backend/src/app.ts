@@ -5,16 +5,10 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/error.ts';
 
-// ── Startup env check ──────────────────────────────────────────────────────
-if (!process.env.DATABASE_URL) {
-  console.error('❌ FATAL: DATABASE_URL environment variable is not set.');
-  console.error('   → Add a PostgreSQL plugin in Railway and link DATABASE_URL.');
-  process.exit(1);
-}
 if (!process.env.JWT_SECRET) {
   console.warn('⚠️  WARNING: JWT_SECRET is not set. Using insecure default.');
 }
-// ──────────────────────────────────────────────────────────────────────────
+
 
 // Routes
 import authRoutes from './routes/auth.routes.ts';
