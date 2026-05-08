@@ -1,140 +1,263 @@
-# TASKO — Team Task Management App
+# 🚀 TASKO — Team Task Management Platform
 
-## Live Demo
-- 🌐 Frontend: `<your-railway-frontend-url>`
-- 🔌 Backend API: `<your-railway-backend-url>`
-
-## GitHub Repository
-`<your-github-repo-url>`
+> A full-stack collaborative task management system with role-based access control, project management, and real-time team coordination.
 
 ---
 
-## Features
+## 🌐 Live Demo
 
-### ✅ User Authentication
-- Signup with Name, Email, Password
-- Secure JWT login with httpOnly cookies
-- Auto-logout on token expiry (401 interceptor)
-
-### ✅ Project Management
-- Create projects (creator auto-assigned as Admin)
-- Admin: Add/remove members by email
-- Admin: Assign roles (Admin / Member)
-- Members: View assigned projects and tasks
-
-### ✅ Task Management
-- Create tasks with Title, Description, Due Date, Priority
-- Assign tasks to any project member
-- Update status: To Do → In Progress → Review → Completed
-- Overdue task detection with visual indicators
-
-### ✅ Dashboard
-- Total tasks, Completed, In Progress, In Review, Overdue
-- Completion rate circular chart
-- **Tasks per user** progress breakdown
-- Project count
-
-### ✅ Role-Based Access Control
-- **Admin**: Manage members, create/assign/delete tasks
-- **Member**: View and update status of assigned tasks only
-- Backend enforces roles on every protected endpoint
+| Service | URL |
+|---------|-----|
+| **Frontend** | https://proactive-adventure-production.up.railway.app |
+| **Backend API** | https://tasko-teamtaskmanager-production.up.railway.app |
+| **API Health** | https://tasko-teamtaskmanager-production.up.railway.app/ |
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Next.js 16, TypeScript, Tailwind-free Vanilla CSS |
-| Backend | Node.js, Express.js, TypeScript, tsx |
-| Database | PostgreSQL (production) / SQLite (development) |
-| ORM | Prisma v6 |
-| Auth | JWT + httpOnly Cookies |
-| Deployment | Railway |
+### 🎨 Frontend
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| **Next.js** | 16.2.6 | React Framework (App Router) |
+| **React** | 19.2.4 | UI Library |
+| **TypeScript** | ^5 | Type Safety |
+| **Tailwind CSS** | ^4 | Utility-first Styling |
+| **Axios** | ^1.16.0 | HTTP Client |
+| **Lucide React** | ^1.14.0 | Icon Library |
+| **Radix UI** | ^1.2.4 | Headless UI Components |
+| **js-cookie** | ^3.0.5 | Cookie Management |
+| **clsx + tailwind-merge** | — | Conditional Class Utilities |
+
+### ⚙️ Backend
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| **Node.js** | 20 | JavaScript Runtime |
+| **Express.js** | ^5.2.1 | Web Framework |
+| **TypeScript** | ^6.0.3 | Type Safety |
+| **Prisma ORM** | ^6.19.3 | Database ORM & Migrations |
+| **SQLite** | — | Embedded Database |
+| **bcryptjs** | ^3.0.3 | Password Hashing |
+| **jsonwebtoken** | ^9.0.3 | JWT Authentication |
+| **Zod** | ^4.4.3 | Schema Validation |
+| **cors** | ^2.8.6 | Cross-Origin Resource Sharing |
+| **helmet** | ^8.1.0 | HTTP Security Headers |
+| **morgan** | ^1.10.1 | HTTP Request Logging |
+| **cookie-parser** | ^1.4.7 | Cookie Parsing Middleware |
+| **dotenv** | ^17.4.2 | Environment Variables |
+| **tsx** | ^4.21.0 | TypeScript Runtime (no compile step) |
+
+### 🚀 Deployment & DevOps
+| Technology | Purpose |
+|-----------|---------|
+| **Railway** | Cloud Hosting (Backend + Frontend) |
+| **Nixpacks** | Auto Build System |
+| **Docker** | Frontend Containerization |
+| **GitHub** | Version Control & CI/CD |
 
 ---
 
-## Local Setup
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     TASKO Platform                      │
+├────────────────────┬────────────────────────────────────┤
+│   Frontend         │   Backend                          │
+│   (Next.js)        │   (Express.js)                     │
+│                    │                                    │
+│  ┌──────────────┐  │  ┌──────────┐   ┌──────────────┐  │
+│  │ App Router   │──┼─▶│ REST API │──▶│  Prisma ORM  │  │
+│  │ Pages        │  │  │          │   │              │  │
+│  │ Components   │  │  │ /api/auth│   └──────┬───────┘  │
+│  └──────────────┘  │  │ /api/proj│          │          │
+│                    │  │ /api/task│   ┌──────▼───────┐  │
+│  ┌──────────────┐  │  │ /api/team│   │   SQLite DB  │  │
+│  │ Axios Client │  │  └──────────┘   └──────────────┘  │
+│  │ JWT via      │  │                                    │
+│  │ Cookie/LS    │  │  ┌──────────────────────────────┐  │
+│  └──────────────┘  │  │  Middleware Stack             │  │
+│                    │  │  helmet | cors | morgan       │  │
+│                    │  │  auth | role | validate       │  │
+└────────────────────┴──┴──────────────────────────────────┘
+```
+
+---
+
+## ✨ Features
+
+- 🔐 **JWT Authentication** — Secure login & registration with token stored in cookie + localStorage
+- 👥 **Role-Based Access Control (RBAC)** — ADMIN and MEMBER roles with different permissions
+- 📁 **Project Management** — Create, update, and track projects with deadlines and priorities
+- ✅ **Task Management** — Assign tasks to team members with status tracking (TODO → IN_PROGRESS → DONE)
+- 👤 **Team Management** — Add/remove members from projects, manage roles
+- 💬 **Comments** — Add comments to tasks for collaboration
+- 📊 **Dashboard** — Overview of projects, tasks, and team activity
+- ⚙️ **Profile Settings** — Update profile info and change password
+
+---
+
+## 📁 Project Structure
+
+```
+TASKO/
+├── backend/                    # Express.js API Server
+│   ├── src/
+│   │   ├── controllers/        # Route handlers
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── project.controller.ts
+│   │   │   ├── task.controller.ts
+│   │   │   └── team.controller.ts
+│   │   ├── middleware/         # Custom middleware
+│   │   │   ├── auth.ts         # JWT verification
+│   │   │   ├── role.ts         # RBAC enforcement
+│   │   │   ├── validate.ts     # Zod schema validation
+│   │   │   └── error.ts        # Global error handler
+│   │   ├── routes/             # API route definitions
+│   │   ├── schemas/            # Zod validation schemas
+│   │   ├── utils/
+│   │   │   ├── jwt.ts          # Token utilities
+│   │   │   └── prisma.ts       # Prisma client singleton
+│   │   └── app.ts              # Express app entry point
+│   ├── prisma/
+│   │   └── schema.prisma       # Database schema
+│   ├── railway.json            # Railway deployment config
+│   ├── nixpacks.toml           # Nixpacks build config
+│   └── package.json
+│
+├── frontend/                   # Next.js Application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── (auth)/         # Auth pages (login, register)
+│   │   │   ├── (dashboard)/    # Protected dashboard pages
+│   │   │   │   ├── dashboard/
+│   │   │   │   ├── projects/
+│   │   │   │   ├── tasks/
+│   │   │   │   ├── team/
+│   │   │   │   └── settings/
+│   │   │   └── layout.tsx
+│   │   ├── components/
+│   │   │   ├── layout/Sidebar.tsx
+│   │   │   └── ui/button.tsx
+│   │   └── lib/
+│   │       ├── api.ts          # Axios instance & interceptors
+│   │       └── utils.ts
+│   ├── Dockerfile              # Docker config for Railway
+│   ├── railway.json            # Railway deployment config
+│   └── package.json
+│
+└── docker-compose.yml          # Local development setup
+```
+
+---
+
+## 🔌 API Endpoints
+
+### Auth (`/api/auth`)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/signup` | Register new user |
+| `POST` | `/login` | Login user |
+| `POST` | `/logout` | Logout user |
+| `GET` | `/me` | Get current user |
+| `PUT` | `/profile` | Update profile |
+| `PUT` | `/password` | Change password |
+
+### Projects (`/api/projects`)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | Get all projects |
+| `POST` | `/` | Create project |
+| `GET` | `/:id` | Get project by ID |
+| `PUT` | `/:id` | Update project |
+| `DELETE` | `/:id` | Delete project |
+
+### Tasks (`/api/tasks`)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/` | Get all tasks |
+| `POST` | `/` | Create task |
+| `PUT` | `/:id` | Update task |
+| `DELETE` | `/:id` | Delete task |
+
+### Team (`/api/team`)
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/:projectId` | Get project members |
+| `POST` | `/:projectId/add` | Add member to project |
+| `DELETE` | `/:projectId/:userId` | Remove member |
+
+---
+
+## 🚀 Local Development Setup
 
 ### Prerequisites
-- Node.js 18+
-- PostgreSQL (or use SQLite for local dev — no setup needed)
+- Node.js 20+
+- npm
 
-### Backend
-
+### Backend Setup
 ```bash
 cd backend
 npm install
-cp .env.example .env   # Edit DATABASE_URL
-npx prisma migrate dev
-npm run dev            # Runs on port 5000
+npx prisma db push
+npm run dev
 ```
 
-### Frontend
-
+### Frontend Setup
 ```bash
 cd frontend
 npm install
-# Edit .env.local: NEXT_PUBLIC_API_URL=http://localhost:5000/api
-npm run dev            # Runs on port 3000
+npm run dev
+```
+
+### Environment Variables
+
+**Backend `.env`:**
+```env
+JWT_SECRET=your_jwt_secret_here
+NODE_ENV=development
+PORT=5000
+```
+
+**Frontend `.env.local`:**
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ---
 
-## Deployment on Railway
+## 🗄️ Database Schema
 
-### Step 1 — Push to GitHub
-```bash
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin <your-github-url>
-git push -u origin main
+```prisma
+User          → Projects (owns many)
+User          → ProjectMember (member of many projects)
+User          → Task (assigned to many tasks)
+User          → Comment (author of many)
+
+Project       → ProjectMember (has many members)
+Project       → Task (has many tasks)
+
+Task          → Comment (has many comments)
 ```
-
-### Step 2 — Deploy Backend on Railway
-1. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub
-2. Select the `backend` folder as root
-3. Add a **PostgreSQL** service from Railway
-4. Set environment variables:
-   ```
-   DATABASE_URL=<from Railway PostgreSQL>
-   JWT_SECRET=<your-secret>
-   FRONTEND_URL=<your-frontend-url>
-   NODE_ENV=production
-   PORT=5000
-   ```
-5. Build command: `npm install && npx prisma generate && npx prisma migrate deploy`
-6. Start command: `npm start`
-
-### Step 3 — Deploy Frontend on Railway
-1. New Service → GitHub → select `frontend` folder
-2. Set environment variables:
-   ```
-   NEXT_PUBLIC_API_URL=https://<your-backend-url>/api
-   ```
-3. Build: `npm install && npm run build`
-4. Start: `npm start`
 
 ---
 
-## API Endpoints
+## 🔒 Security Features
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/signup` | No | Register |
-| POST | `/api/auth/login` | No | Login |
-| GET | `/api/auth/me` | Yes | Get current user |
-| GET | `/api/projects` | Yes | List projects |
-| POST | `/api/projects` | Yes | Create project |
-| GET | `/api/projects/:id` | Yes | Project detail |
-| PUT | `/api/projects/:id` | Admin | Update project |
-| DELETE | `/api/projects/:id` | Owner | Delete project |
-| POST | `/api/projects/:id/members` | Admin | Add member |
-| DELETE | `/api/projects/:id/members/:uid` | Admin | Remove member |
-| GET | `/api/tasks` | Yes | My tasks |
-| POST | `/api/tasks` | Yes | Create task |
-| PUT | `/api/tasks/:id` | Member | Update task |
-| DELETE | `/api/tasks/:id` | Admin | Delete task |
-| GET | `/api/tasks/stats` | Yes | Dashboard stats |
-| GET | `/api/team` | Yes | Team members |
+- **Helmet.js** — Sets secure HTTP headers
+- **bcryptjs** — Passwords hashed with salt rounds
+- **JWT** — Stateless authentication with expiry
+- **Zod validation** — All inputs validated before processing
+- **CORS** — Configured for specific allowed origins
+- **RBAC** — Role middleware protects admin-only routes
+
+---
+
+## 👨‍💻 Developer
+
+**Dhruv Panday**  
+GitHub: [@dhruvpanday1](https://github.com/dhruvpanday1)
+
+---
+
+*Built with ❤️ using Next.js, Express.js, Prisma & Railway*
