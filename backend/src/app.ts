@@ -28,6 +28,11 @@ app.use(cors({
 app.use(helmet());
 app.use(morgan('dev'));
 
+// Health check
+app.get('/', (_req, res) => {
+  res.json({ status: 'ok', message: '🚀 TASKO API is running!', version: '1.0.0' });
+});
+
 // Mount routers
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
